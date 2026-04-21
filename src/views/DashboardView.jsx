@@ -13,7 +13,7 @@ export default function DashboardView() {
 
   // 🔥 FETCH HISTORY
   useEffect(() => {
-    fetch(`http://localhost:5000/api/history/${userId}`)
+    fetch(`https://truthlens-backendd.onrender.com/api/history/${userId}`)
       .then(res => res.json())
       .then(data => {
         console.log("History Data:", data); // DEBUG
@@ -27,7 +27,7 @@ export default function DashboardView() {
     if (!window.confirm("Delete this record?")) return;
 
     try {
-      await fetch(`http://localhost:5000/api/history/${id}`, {
+      await fetch(`https://truthlens-backendd.onrender.com/api/history/${id}`, {
         method: "DELETE",
       });
 

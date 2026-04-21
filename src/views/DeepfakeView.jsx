@@ -35,7 +35,7 @@ export default function DeepfakeView() {
   formData.append("file", file);
 
   try {
-    const res = await axios.post("http://localhost:5000/deepfake", formData);
+    const res = await axios.post("https://truthlens-backendd.onrender.com/deepfake", formData);
     setResult(res.data);
   } catch (err) {
     console.error("Detection Failed:", err);

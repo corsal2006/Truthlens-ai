@@ -34,7 +34,7 @@ export default function NewsView() {
   else formData.append("text", input);
 
   try {
-    const res = await axios.post("http://localhost:5000/verify", formData);
+    const res = await axios.post("https://truthlens-backendd.onrender.com/verify", formData);
     setResult(res.data);
 
     // Optional: Clear inputs after success

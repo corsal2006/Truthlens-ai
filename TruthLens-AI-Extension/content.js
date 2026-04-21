@@ -4,7 +4,7 @@
   }
   window.__truthLensMounted = true;
 
-  const DEFAULT_API_BASE = "http://localhost:5000";
+  const DEFAULT_API_BASE = "https://truthlens-backendd.onrender.com";
   const PANEL_WIDTH = 420;
 
   const state = {
@@ -838,7 +838,7 @@
         <p class="tl-subtitle">Point the extension to your Express backend and choose the user id sent to Firestore.</p>
       </section>
       <section class="tl-form">
-        <input class="tl-input" id="tl-api-base" value="${escapeHtml(state.apiBase)}" placeholder="http://localhost:5000" />
+        <input class="tl-input" id="tl-api-base" value="${escapeHtml(state.apiBase)}" placeholder="https://truthlens-backendd.onrender.com" />
         <input class="tl-input" id="tl-user-id" value="${escapeHtml(state.userId)}" placeholder="demo-user" />
         <div class="tl-toolbar">
           <button class="tl-secondary" id="tl-back-home">Back</button>

@@ -14,7 +14,7 @@ This folder contains a loadable Chrome extension built with Manifest V3.
 
 ## Backend expected by the extension
 
-Default API base: `http://localhost:5000`
+Default API base: `https://truthlens-backendd.onrender.com`
 
 Routes:
 
