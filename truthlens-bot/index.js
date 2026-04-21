@@ -57,13 +57,15 @@ async function startBot() {
 
     sock.ev.on("connection.update", ({ connection, qr, lastDisconnect }) => {
         if (qr) {
-            console.log("📱 Scan QR:");
-            qrcode.generate(qr, { small: true });
-        }
+    console.log("📱 Scan QR:");
 
-        if (connection === "open") {
-            console.log("✅ Luna Connected");
-        }
+    // Terminal QR (small)
+    qrcode.generate(qr, { small: true });
+
+    // 🔥 NEW: clickable QR link
+    console.log("\n👉 Open this link to scan easily:\n");
+    console.log(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${qr}\n`);
+}
 
         if (connection === "close") {
             const code = lastDisconnect?.error?.output?.statusCode;
