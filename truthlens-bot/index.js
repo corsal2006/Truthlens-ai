@@ -13,8 +13,8 @@ const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
 
-const BACKEND_URL = "http://127.0.0.1:5000";
-const WEBSITE_LINK = "https://your-site.com";
+const BACKEND_URL = "https://truthlens-backendd.onrender.com";
+const WEBSITE_LINK = "https://truthlens-ai-tan.vercel.app/";
 
 const sessions = new Map();
 const cooldown = new Map();
