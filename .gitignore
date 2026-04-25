@@ -15,4 +15,3 @@ uploads/
 truthlens-backend/.env
 truthlens-backend/serviceAccount.json
 truthlens-backend/vision-key.json
-truthlens-bot/auth/
