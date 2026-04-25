@@ -18,6 +18,8 @@ const WEBSITE_LINK = process.env.WEBSITE_LINK;
 
 const sessions = new Map();
 const cooldown = new Map();
+
+/* 🔥 EXPRESS SERVER (FOR RENDER FREE) */
 const express = require("express");
 const app = express();
 
@@ -51,8 +53,7 @@ I help you:
 • Detect Deepfakes  
 • Explain results clearly
 
-🌐 Try our full platform :
-${WEBSITE_LINK}
+🌐 ${WEBSITE_LINK}
 
 ${menu()}
 `;
@@ -100,7 +101,6 @@ async function startBot() {
 
     const jid = msg.key.remoteJid;
 
-    // 🔥 cooldown protection
     const now = Date.now();
     if (cooldown.get(jid) > now) return;
     cooldown.set(jid, now + 1000);
@@ -148,16 +148,22 @@ async function startBot() {
         return sock.sendMessage(jid, { text: menu() });
       }
 
-      /* NEWS */
+      /* ================= NEWS ================= */
       if (session.mode === "news" && text) {
         await sock.sendMessage(jid, { text: "🔍 Analyzing..." });
 
-        const res = await axios.post(`${BACKEND_URL}/verify`, {
-          text,
-          userId: jid
-        });
+        console.log("Sending to backend:", text);
 
-        const a = res.data.analysis;
+        const res = await axios.post(
+          `${BACKEND_URL}/verify`,
+          { text, userId: jid },
+          { timeout: 60000 } // 🔥 IMPORTANT FIX
+        );
+
+        console.log("Response:", res.data);
+
+        // 🔥 FIXED (NO .analysis)
+        const a = res.data;
 
         await sock.sendMessage(jid, {
           text: `📰 *TruthLens Analysis*
@@ -173,8 +179,10 @@ async function startBot() {
         return sock.sendMessage(jid, { text: menu() });
       }
 
-      /* DEEPFAKE */
+      /* ================= DEEPFAKE ================= */
       if (session.mode === "deepfake") {
+        await sock.sendMessage(jid, { text: "🔍 Analyzing media..." });
+
         const buffer = await downloadMediaMessage(msg, "buffer", {}, {});
         const path = `./temp/${Date.now()}.jpg`;
 
@@ -182,10 +190,16 @@ async function startBot() {
 
         const form = new FormData();
         form.append("file", fs.createReadStream(path));
+        form.append("userId", jid); // 🔥 important
 
-        const res = await axios.post(`${BACKEND_URL}/deepfake`, form, {
-          headers: form.getHeaders()
-        });
+        const res = await axios.post(
+          `${BACKEND_URL}/deepfake`,
+          form,
+          {
+            headers: form.getHeaders(),
+            timeout: 60000
+          }
+        );
 
         fs.unlinkSync(path);
 
@@ -200,10 +214,11 @@ async function startBot() {
       }
 
     } catch (err) {
-      console.log("ERROR:", err.message);
+      console.log("FULL ERROR:", err?.response?.data || err.message);
 
       await sock.sendMessage(jid, {
-        text: "⚠️ Error processing request. Try again."
+        text: `❌ Error:
+${err?.response?.data?.error || err.message}`
       });
     }
   });
